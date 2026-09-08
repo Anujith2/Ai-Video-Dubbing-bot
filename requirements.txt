@@ -3,4 +3,4 @@ openai
 moviepy
 gtts
 flask
-
+requests
