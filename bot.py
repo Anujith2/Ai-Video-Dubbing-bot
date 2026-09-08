@@ -3,7 +3,7 @@ import threading
 from flask import Flask
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, MessageHandler, CallbackQueryHandler, ContextTypes, filters
-from moviepy.editor import VideoFileClip
+import moviepy.editor as mp
 from openai import OpenAI
 from gtts import gTTS
 
@@ -107,7 +107,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         # 1. Extract audio from video
         audio_path = f"audio_{query.message.chat_id}.mp3"
-        video_clip = VideoFileClip(video_path)
+        video_clip = mp.VideoFileClip(video_path)
         video_clip.audio.write_audiofile(audio_path, logger=None)
         
         # 2. Translate audio using Whisper API
@@ -124,7 +124,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         tts.save(output_audio_path)
 
         # 4. Merge new audio with the video
-        new_audio = VideoFileClip(output_audio_path)
+        new_audio = mp.VideoFileClip(output_audio_path)
         final_video_clip = video_clip.set_audio(new_audio)
         output_video_path = f"output_video_{query.message.chat_id}.mp4"
         final_video_clip.write_videofile(output_video_path, codec="libx264", audio_codec="aac", logger=None)
