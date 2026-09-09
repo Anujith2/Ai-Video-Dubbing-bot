@@ -1,6 +1,7 @@
 python-telegram-bot
-openai
 moviepy
 gtts
 flask
 requests
+SpeechRecognition
+pydub
